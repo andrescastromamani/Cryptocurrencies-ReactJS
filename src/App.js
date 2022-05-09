@@ -1,4 +1,5 @@
 import styled from '@emotion/styled';
+import { Form } from './components/Form';
 
 const Container = styled.div`
   max-width: 100%;
@@ -37,6 +38,7 @@ function App() {
         <Title>
           <span>Crypto</span>
         </Title>
+        <Form />
       </div>
     </Container>
   );
