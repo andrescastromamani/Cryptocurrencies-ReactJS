@@ -28,23 +28,19 @@ const Select = styled.select`
     }
 `;
 
-export const useCurrency = (label, initialState, currencies) => {
-    const [currency, setCurrency] = useState(initialState);
-    const select = () => (
+export const useCryptoCurrency = (label, initialState) => {
+    const [cryptoCurrency, setCryptoCurrency] = useState(initialState);
+    const selectCrypto = () => (
         <Fragment>
             <Label>{label}</Label>
             <Select
-                value={currency}
-                onChange={e => setCurrency(e.target.value)}
+                value={cryptoCurrency}
+                onChange={e => setCryptoCurrency(e.target.value)}
             >
                 <option value="">Select Currency</option>
-                {
-                    currencies.map(currency => (
-                        <option key={currency.value} value={currency.value}>{currency.name}</option>
-                    ))
-                }
+
             </Select>
         </Fragment>
     )
-    return [currency, select, setCurrency]
+    return [cryptoCurrency, selectCrypto, setCryptoCurrency]
 }

@@ -32,7 +32,7 @@ function App() {
   return (
     <Container>
       <div>
-        <Img src="https://e7.pngegg.com/pngimages/1018/698/png-clipart-bitcoin-cash-cryptocurrency-money-blockchain-election-flyers-text-orange.png" />
+        <Img src="https://raw.githubusercontent.com/juanpablogdl/cripto_react/master/src/cryptomonedas.png" />
       </div>
       <div>
         <Title>
