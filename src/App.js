@@ -1,5 +1,8 @@
 import styled from '@emotion/styled';
+import axios from 'axios';
+import { useEffect, useState } from 'react';
 import { Form } from './components/Form';
+import { Result } from './components/Result';
 
 const Container = styled.div`
   max-width: 100%;
@@ -19,6 +22,7 @@ const Title = styled.h1`
   font-size: 1.5rem;
   margin: 0;
   color: #fff;
+  text-transform: uppercase;
   text-align: left;
   &:after {
     content: '';
@@ -29,6 +33,19 @@ const Title = styled.h1`
   }
 `;
 function App() {
+  const [currency, setCurrency] = useState('');
+  const [cryptoCurrency, setCryptoCurrency] = useState('');
+  const [response, setResponse] = useState({});
+  const calculateCurrency = async () => {
+    const url = `https://min-api.cryptocompare.com/data/pricemultifull?fsyms=${cryptoCurrency}&tsyms=${currency}`;
+    const res = await axios.get(url);
+    setResponse(res.data.DISPLAY[cryptoCurrency][currency]);
+  }
+  useEffect(() => {
+    if (currency === '' || cryptoCurrency === '') return;
+    calculateCurrency();
+  }, [currency, cryptoCurrency]);
+
   return (
     <Container>
       <div>
@@ -36,9 +53,15 @@ function App() {
       </div>
       <div>
         <Title>
-          <span>Crypto</span>
+          Cryptocurrencies
         </Title>
-        <Form />
+        <Form
+          setCurrency={setCurrency}
+          setCryptoCurrency={setCryptoCurrency}
+        />
+        <Result
+          response={response}
+        />
       </div>
     </Container>
   );

@@ -28,7 +28,7 @@ const Select = styled.select`
     }
 `;
 
-export const useCryptoCurrency = (label, initialState) => {
+export const useCryptoCurrency = (label, initialState, options) => {
     const [cryptoCurrency, setCryptoCurrency] = useState(initialState);
     const selectCrypto = () => (
         <Fragment>
@@ -37,8 +37,12 @@ export const useCryptoCurrency = (label, initialState) => {
                 value={cryptoCurrency}
                 onChange={e => setCryptoCurrency(e.target.value)}
             >
-                <option value="">Select Currency</option>
-
+                <option value="">Select CryptoCurrency</option>
+                {
+                    options.map(option => (
+                        <option key={option.CoinInfo.Id} value={option.CoinInfo.Name}>{option.CoinInfo.FullName}</option>
+                    ))
+                }
             </Select>
         </Fragment>
     )

@@ -1,8 +1,10 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from '@emotion/styled';
+import axios from 'axios';
 
 import { useCurrency } from '../hooks/useCurrency';
 import { useCryptoCurrency } from '../hooks/useCryptocurrency';
+import { Error } from './Error';
 
 const Button = styled.button`
     background-color: #4CAF50;
@@ -19,7 +21,9 @@ const Button = styled.button`
     }
 `;
 
-export const Form = () => {
+export const Form = ({ setCurrency, setCryptoCurrency }) => {
+    const [cryptoCurrencies, setCryptoCurrencies] = useState([]);
+    const [error, setError] = useState(false);
     const currencies = [
         {
             name: 'USD',
@@ -32,12 +36,43 @@ export const Form = () => {
         {
             name: 'GBP',
             value: 'GBP',
+        },
+        {
+            name: 'ARS',
+            value: 'ARS',
+        },
+        {
+            name: 'BOB',
+            value: 'BOB',
         }
     ];
-    const [currency, Select] = useCurrency('Currency', 'USD', currencies);
-    const [cryptoCurrency, SelectCryptoCurrency] = useCryptoCurrency('CryptoCurrency', 'BTC');
+    const [currency, Select] = useCurrency('Currency', '', currencies);
+    const [cryptoCurrency, SelectCryptoCurrency] = useCryptoCurrency('CryptoCurrency', '', cryptoCurrencies);
+    //get data from API
+    const getData = async () => {
+        const url = `https://min-api.cryptocompare.com/data/top/mktcapfull?limit=10&tsym=USD`;
+        const res = await axios.get(url);
+        setCryptoCurrencies(res.data.Data);
+    }
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        if (cryptoCurrency === '' || currency === '') {
+            setError(true);
+            return;
+        }
+        setError(false);
+        setCurrency(currency);
+        setCryptoCurrency(cryptoCurrency);
+    }
+    useEffect(() => {
+        getData();
+    }, [currency, cryptoCurrency]);
     return (
-        <form>
+
+        <form
+            onSubmit={handleSubmit}
+        >
+            {error ? <Error message="All fields are required" /> : null}
             <Select />
             <SelectCryptoCurrency />
             <Button
